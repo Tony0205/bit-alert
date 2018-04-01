@@ -1,29 +1,50 @@
-const express = require('express')
-const app = express()
-const schedule = require('node-schedule');
+var express = require('express');
+var path = require('path');
+var favicon = require('serve-favicon');
+var logger = require('morgan');
+var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
 
-function jobTest(req, res) {
-    // let rule = new schedule.RecurrenceRule();
-    // rule.second = 5; // 매 5초마다 실행하는 룰 (1분 5초, 2분 5초, 3분 5초와 같은식으로...)
+var index = require('./routes/index');
+var users = require('./routes/users');
 
-    // 5초마다 실행 룰 생성
-    // let scheduleRule = '/5 * * * * *';
+var app = express();
 
-    // let job = schedule.scheduleJob(scheduleRule, function() {
-    //    console.log("5초마다 실행합니다."); 
-    // });
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
 
-    let playAlert = setInterval(function() {
-        console.log("5초마다 실행합니다.");
-    }, 5000);
-}
+// uncomment after placing your favicon in /public
+//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/', (req, res) => {
-    console.log('시작');
-    jobTest(req, res);
-    res.send('Hello World!!!!');
-})
+app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js')); // redirect bootstrap JS 
+app.use('/js', express.static(__dirname + '/node_modules/jquery/dist')); // redirect JS jQuery 
+app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css')); // redirect CSS bootstrap
 
+app.use('/', index);
+app.use('/users', users);
 
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  var err = new Error('Not Found');
+  err.status = 404;
+  next(err);
+});
 
-app.listen(3000, () => console.log('Example app listening on port 3000!'))
+// error handler
+app.use(function(err, req, res, next) {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  // render the error page
+  res.status(err.status || 500);
+  res.render('error');
+});
+
+module.exports = app;

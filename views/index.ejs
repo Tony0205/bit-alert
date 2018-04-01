@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>bit-alert</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel="stylesheet" href="/css/bootstrap.min.css"> 
+    <script src="/js/jquery.min.js"></script> 
+    <script src="/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <h1>bit-alert</h1>
+    <br>
+    <p>알람설정 app</p>
+    <br>
+    
+    <form>
+      <div class="form-group form-inline">
+        <label for="">1) [비트맥스 기준 USD] &nbsp;</label>
+        
+        <select class="form-control" id="sel1">
+            <option>=</option>
+            <option>></option>
+            <option><</option>
+        </select>
+        &nbsp;&nbsp;
+        <input type="text" class="form-control" id="exampleInputName2" placeholder="ex) 7000"> &nbsp; USD
+      </div>
+      <small id="" class="form-text text-muted">- 알림을 설정할 기준 금액을 입력해주세요</small>
+
+      <br>
+      <br>
+      <div class="form-group form-inline">
+        <label for="">2) Checking Interval : &nbsp;</label>
+        <input type="text" class="form-control col-sm-1" id="" placeholder="ex) 120"> &nbsp; 초
+      </div>
+      <small id="" class="form-text text-muted">- 몇 초 마다 체크할 것인지 설정 해 주세요.</small>
+      
+      <br>
+      <br>
+      <div class="form-group">
+        <label for="">3) 알림 횟수 : &nbsp;</label>
+        <div class="form-inline">
+          <input type="text" class="form-control col-sm-1" id="" placeholder="ex) 5"> &nbsp; 분 간격으로 &nbsp;&nbsp;
+          <input type="text" class="form-control col-sm-1" id="" placeholder="ex) 7"> &nbsp; 번 알림
+        </div>
+      </div>
+      
+      <br>
+      <div class="form-group">
+        <label for="">4) 알림 Email : &nbsp;</label>
+        <input type="email" class="form-control col-sm-3" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+      </div>
+      
+      <br>
+      <button type="submit" class="btn btn-success col-sm-1">알림 추가</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <button type="reset" class="btn btn-dark col-sm-1">초기화</button>
+    </form>
+    
+  </body>
+</html>
