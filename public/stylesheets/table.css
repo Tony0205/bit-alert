@@ -1,0 +1,93 @@
+/* .alert-table {
+    width: 70%;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+thead, tbody { display: block; }
+
+th, td {
+    width: 175px;
+}
+*/
+
+.table-body {
+    width : 1350px;
+    font-family: sans-serif;
+    font-size: 0.9em;
+}
+
+table {
+    border-collapse: collapse;
+    border-bottom: 1px solid #ddd;
+}
+
+thead {
+    background-color: #343a40;
+    color: #fff;
+}
+
+thead,tbody {
+    display: block;
+}
+
+/* thead 설정 */
+th {
+    padding: 8px 10px;
+    width: 15%;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+}
+
+
+th:nth-child(1) {
+    width: 4%;
+}
+
+th:nth-child(2) {
+    width: 6%;
+}
+
+th:nth-child(3) {
+    width: 20%;
+}
+
+th:nth-child(4) {
+    width: 10%;
+}
+
+/* tbody 설정 */
+td {
+    padding: 8px 10px;
+    width: 15%;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+}
+
+td:nth-child(1){
+    width: 4%;
+}
+
+td:nth-child(2){
+    width: 6%;
+}
+
+td:nth-child(3){
+    width: 260px;
+}
+
+td:nth-child(4){
+    width: 11%;
+}
+
+tr th,
+tr td {
+    text-align: center;
+}
+
+tbody {
+    height: 300px;
+    overflow-y: scroll
+}

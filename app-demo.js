@@ -7,15 +7,14 @@ function jobTest(req, res) {
     // rule.second = 5; // 매 5초마다 실행하는 룰 (1분 5초, 2분 5초, 3분 5초와 같은식으로...)
 
     // 5초마다 실행 룰 생성
-    // let scheduleRule = '/5 * * * * *';
+    let scheduleRule = '/5 * * * * *';
 
-    // let job = schedule.scheduleJob(scheduleRule, function() {
-    //    console.log("5초마다 실행합니다."); 
-    // });
+    let job = schedule.scheduleJob(scheduleRule, function() {
+       console.log("5초마다 실행합니다."); 
+    });
 
-    let playAlert = setInterval(function() {
-        console.log("5초마다 실행합니다.");
-    }, 5000);
+    console.log(job)
+
 }
 
 app.get('/', (req, res) => {

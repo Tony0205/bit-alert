@@ -1,0 +1,13 @@
+create table schedular(
+    id int AUTO_INCREMENT not null,
+    notification_code varchar(255),
+    sign varchar(5),
+    standard_usd varchar(255),
+    interval_second varchar(100),
+    noti_interval_minute varchar(100),
+    noti_interval_repeat varchar(100),
+    noti_sending_email varchar(255),
+    create_date datetime,
+    noti_current_state varchar(5),
+    PRIMARY KEY(id)
+) DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;

@@ -3,9 +3,11 @@
   <head>
     <title>bit-alert</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
-    <link rel="stylesheet" href="/css/bootstrap.min.css"> 
+    <link rel='stylesheet' href='/stylesheets/table.css' />
+    <link rel="stylesheet" href="/css/bootstrap.min.css" /> 
     <script src="/js/jquery.min.js"></script> 
     <script src="/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-slimScroll/1.3.8/jquery.slimscroll.min.js"></script>
   </head>
   <body>
     <h1>bit-alert</h1>
@@ -13,48 +15,237 @@
     <p>알람설정 app</p>
     <br>
     
-    <form>
-      <div class="form-group form-inline">
-        <label for="">1) [비트맥스 기준 USD] &nbsp;</label>
-        
-        <select class="form-control" id="sel1">
-            <option>=</option>
-            <option>></option>
-            <option><</option>
-        </select>
-        &nbsp;&nbsp;
-        <input type="text" class="form-control" id="exampleInputName2" placeholder="ex) 7000"> &nbsp; USD
-      </div>
-      <small id="" class="form-text text-muted">- 알림을 설정할 기준 금액을 입력해주세요</small>
 
-      <br>
-      <br>
-      <div class="form-group form-inline">
-        <label for="">2) Checking Interval : &nbsp;</label>
-        <input type="text" class="form-control col-sm-1" id="" placeholder="ex) 120"> &nbsp; 초
-      </div>
-      <small id="" class="form-text text-muted">- 몇 초 마다 체크할 것인지 설정 해 주세요.</small>
-      
-      <br>
-      <br>
-      <div class="form-group">
-        <label for="">3) 알림 횟수 : &nbsp;</label>
-        <div class="form-inline">
-          <input type="text" class="form-control col-sm-1" id="" placeholder="ex) 5"> &nbsp; 분 간격으로 &nbsp;&nbsp;
-          <input type="text" class="form-control col-sm-1" id="" placeholder="ex) 7"> &nbsp; 번 알림
+    <!-- 알람 설정 Component -->
+    <div>
+      <form action="" method="POST" id="noti_setform">
+        <div class="form-group form-inline">
+          <label for="">1) [비트맥스 기준 USD] &nbsp;</label>
+          
+          <select class="form-control" id="sign" name="sign">
+              <option value="=">=</option>
+              <option value=">">></option>
+              <option value="<"><</option>
+          </select>
+          &nbsp;&nbsp;
+          <input type="text" class="form-control" id="standard_usd" name="standard_usd" placeholder="ex) 7000" > &nbsp; USD
         </div>
-      </div>
-      
-      <br>
-      <div class="form-group">
-        <label for="">4) 알림 Email : &nbsp;</label>
-        <input type="email" class="form-control col-sm-3" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-      </div>
-      
-      <br>
-      <button type="submit" class="btn btn-success col-sm-1">알림 추가</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <button type="reset" class="btn btn-dark col-sm-1">초기화</button>
-    </form>
+        <small id="" class="form-text text-muted">- 알림을 설정할 기준 금액을 입력해주세요</small>
+
+        <br>
+        <br>
+        <div class="form-group form-inline">
+          <label for="interval_second">2) Checking Interval : &nbsp;</label>
+          <input type="text" class="form-control col-sm-1" id="interval_second" name="interval_second" placeholder="ex) 60" > &nbsp; 초
+        </div>
+        <small id="" class="form-text text-muted">- 몇 초 마다 체크할 것인지 설정 해 주세요.</small>
+        
+        <br>
+        <!-- <div class="form-group">
+          <label for="noti_interval_minute">3) 알림 횟수 : &nbsp;</label>
+          <div class="form-inline">
+            <input type="text" class="form-control col-sm-1" id="noti_interval_minute" name="noti_interval_minute" placeholder="ex) 5"> &nbsp; 분 간격으로 &nbsp;&nbsp;
+            <input type="text" class="form-control col-sm-1" id="noti_interval_repeat" name="noti_interval_repeat" placeholder="ex) 7"> &nbsp; 번 알림
+          </div>
+        </div> -->
+        
+        <br>
+        <div class="form-group">
+          <label for="noti_sending_email">4) 알림 받을 Email : &nbsp;</label>
+          <input type="email" class="form-control col-sm-3" id="noti_sending_email" name="noti_sending_email" aria-describedby="emailHelp" placeholder="Enter email">
+        </div>
+        
+        <br>
+        <button type="button" class="btn btn-success col-sm-1" id="noti_add">알림 추가</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <button type="reset" class="btn btn-dark col-sm-1">초기화</button>
+      </form>
+    </div>
+
     
+    <br>
+    <br>
+    <br>
+    
+    
+    <!-- 알람 목록 -->
+    <div>
+      <h3>알람 리스트</h3>
+      <table class="table-body" id="noti_table">
+        <thead>
+          <tr>
+            <th> 순번 </th>
+            <th> 알림 코드 </th>
+            <th> 기준 USD </th>
+            <th> Checking Interval </th>
+            <th> 알림 횟수 </th>
+            <th> 알림 Email </th>
+            <th> 알림 생성날짜 </th>
+            <th> Current State </th>
+          </tr>
+        </thead>
+        
+        <tbody>
+          <% for(var i=0; i<row.length; i++) { %>
+          <tr id="noti_row<%=i%>">
+            <td> <%= row[i].id %> </td>
+            <td id="noti_code<%=i%>"> 
+            <% if(row[i].notification_code == null) { %>
+              미설정
+            <% } else { %>
+              <%= row[i].notification_code %>
+            <% } %>
+            </td>
+
+            <td> 
+            비트맥스USD가 [<%= row[i].standard_usd %> USD]
+            <% if(row[i].sign == "="){ %>
+            같을
+            <% } else if(row[i].sign == ">"){ %>
+            이상 일
+            <% } else { %>
+            미만 일
+            <% } %>          
+            때 
+            </td>
+            <td> <%= row[i].interval_second %> </td>
+            <td> <%= row[i].noti_interval_minute %>분 간격으로  <%= row[i].noti_interval_repeat %>번 반복알림</td>
+            <td> <%= row[i].noti_sending_email %> </td>
+            <td> <%= row[i].create_date %> </td>
+            <td>               
+              <% if(row[i].noti_current_state == "stop") { %> 
+              <button type="button" class="btn btn-danger btn-sm" onclick="notiStart('<%=row[i].id%>');">
+                현재 중지 중
+              </button>
+              <!-- if the notification current state is start... -->
+              <% } else { %>
+              <button type="button" class="btn btn-success btn-sm" onclick="notiStop('<%=row[i].id%>');">
+                현재 실행 중
+              </button>
+              <% } %>
+            </td>
+          </tr>          
+          <% } %>
+                    
+        </tbody>
+      </table>
+    </div>
+    
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+        
   </body>
 </html>
+
+
+<!-- function script -->
+<script>
+  $('#noti_add').click(function() {
+    let usd_price = $('#standard_usd');
+    let interval = $('#interval_second');
+    let email = $('#noti_sending_email');
+
+    if (usd_price.val() == "") {
+      alert('알림 USD 값을 입력해주세요.');
+      usd_price.focus();
+      return;
+    }
+
+    if (interval.val() == "") {
+      alert('몇 초 마다 체크할 것인지 입력해주세요');
+      interval.focus();
+      return;
+    }
+
+    if (email.val() == "") {
+      alert('알릴 이메일 주소를 입력해주세요');
+      email.focus();
+      return;
+    }
+
+    const form_data = $('#noti_setform').serialize();
+
+    $.ajax({
+      type : "POST",
+      url : "/schedule",
+      cache : false,
+      data: form_data,
+      success: onSuccess,
+      error: onError
+    });
+  });
+
+  function onSuccess(json, status) {
+    if (json.status === "success" && status === "success") {
+      alert("알림이 정상적으로 추가되었습니다. (알림 번호: " + json.insertId + ")");
+      window.location.reload();      
+      
+    } else{
+      alert('알림 추가에 실패하였습니다. ' + status);
+      console.log(json, status);
+    }
+  }
+
+  function onError(data, status) {
+    alert('알림 추가에 실패하였습니다.' + data);
+    console.log(data, status);
+  }
+
+
+  // primary_key : 클릭한 해당 row의 고유 키 값
+  function notiStart(primary_key) {    
+    let form_data = {};
+    form_data.id = primary_key;
+
+    $.ajax({
+      type : "POST",
+      url : "/notification",
+      cache : false,
+      data: form_data,
+      success: (json, status)=>{
+        console.log(json, status);
+        
+        if (json == "success") {          
+          alert(`${primary_key}번 알람이 시작되었습니다.`);
+          window.location.reload();
+        }
+
+      },
+      error: (data, status)=>{
+        alert('알림 시작에 실패하였습니다.' + data);
+        console.log(data, status);
+      }
+
+    });    
+
+  }
+
+
+  function notiStop(id) {
+    let form_data = {};
+    form_data.id = id;
+
+    $.ajax({
+      type : "POST",
+      url : "/notification/stop",
+      cache : false,
+      data: form_data,
+      success: (json, status) => {
+        if (json == "성공" && status == "success") {
+          alert('알림이 성공적으로 중지되었습니다.');
+          window.location.reload();
+        }
+      },
+      error: (data, status) => {
+        alert('알림 중지에 실패하였습니다.' + data);
+        console.log(data, status);
+      }
+    });
+
+    
+  }
+
+
+</script>
