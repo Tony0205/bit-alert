@@ -1,4 +1,4 @@
-create table schedular(
+create table scheduler(
     id int AUTO_INCREMENT not null,
     notification_code varchar(255),
     sign varchar(5),

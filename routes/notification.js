@@ -36,7 +36,7 @@ router.post('/', async function(req, res, next) {
 
   try {
     // puppeteer launch
-    let browser = await puppeteer.launch() // 브라우저 인스턴스를 만들고
+    let browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox']}) // 브라우저 인스턴스를 만들고
     let page = await browser.newPage() // 페이지를 연다
 
     await page.goto('https://www.bitmex.com/app/trade/XBTUSD') // 비트맥스 사이트 진입
