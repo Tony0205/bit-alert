@@ -161,6 +161,22 @@ router.post('/stop', function(req, res, next) {
 
 
 
+router.delete('/delete', function(req, res, next) {
+  // console.log('스탑으로 옴');
+  let row = {};
+  row.id = req.body["id"]; // 파라미터 형태를 맞춰줌.
+
+  console.log("객체 존재함???", timers[row.id]);
+  
+  // 알림 정지 함수.
+  notiStop(row)
+
+  // 알림 정지 후, 삭제
+  notiDelete(row.id)
+
+  res.send("성공");
+});
+
 
 async function notiStop(row) {
   try {
@@ -199,6 +215,23 @@ async function notiStartQuery(id) {
 
   } catch (error) {
     throw new Error(error);  
+  }
+
+}
+
+async function notiDelete(id) {
+  
+  let delete_sql = `DELETE FROM scheduler WHERE id = "${id}"`;
+
+  let result_row = await pool.query(delete_sql).catch(function(err) {
+    console.log(err);
+  });
+
+  if (result_row.affectedRows != 1) {
+    throw new Error('The notification delete is fail!')
+  
+  } else {
+    console.log(`${id}번 알람 삭제 성공`);
   }
 
 }

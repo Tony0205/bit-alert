@@ -113,7 +113,7 @@
             <td> <%= row[i].create_date %> </td>
             <td>               
               <% if(row[i].noti_current_state == "stop") { %> 
-              <button type="button" class="btn btn-danger btn-sm" onclick="notiStart('<%=row[i].id%>');">
+              <button type="button" class="btn btn-dark btn-sm" onclick="notiStart('<%=row[i].id%>');">
                 현재 중지 중
               </button>
               <!-- if the notification current state is start... -->
@@ -122,6 +122,9 @@
                 현재 실행 중
               </button>
               <% } %>
+              <button type="button" class="btn btn-danger btn-sm" onclick="notiDelete('<%=row[i].id%>');">
+                삭제
+              </button>
             </td>
           </tr>          
           <% } %>
@@ -243,9 +246,30 @@
         console.log(data, status);
       }
     });
-
     
   }
 
+  function notiDelete(id) {
+    let form_data = {};
+    form_data.id = id;
+
+    $.ajax({
+      type : "DELETE",
+      url : "/notification/delete",
+      cache : false,
+      data: form_data,
+      success: (json, status) => {
+        if (json == "성공" && status == "success") {
+          alert('알림이 성공적으로 삭제 되었습니다.');
+          window.location.reload();
+        }
+      },
+      error: (data, status) => {
+        alert('알림 삭제에 실패하였습니다.' + data);
+        console.log(data, status);
+      }
+    });
+
+  }
 
 </script>
